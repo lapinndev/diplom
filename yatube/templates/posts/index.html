@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+{% load thumbnail %}
+{% block title %}
+{{title}}
+{% endblock %}
+  
+{% block content %}
+  <h1>Последнее обновление на сайте</h1>
+  {% include '../includes/switcher.html' %}
+  {% for post in page_obj %}
+  <ul>
+    <li>
+      <a href="{% url 'posts:profile' post.author %}">{{ post.author.get_full_name }}</a>
+    </li>
+    <li>
+      Дата публикации: {{ post.pub_date|date:'d E Y'}}
+    </li>
+    <li>
+      {% if post.group %}   
+      <a href="{% url 'posts:group_list' post.group.slug %}">{{ post.group}}</a>
+      {% endif %}
+    </li>
+    <h3 style="text-align: center;">{{ post.dish }}</h3>
+  </ul>
+  {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+  <img class="card-img my-2" src="{{ im.url }}" style="align-items: center; width: 90%;">
+  {% endthumbnail %}
+  <p>
+    {{ post.text|truncatechars:200 }}
+    {% if post.text|length > 200 %}
+      <a href="{% url 'posts:post_detail' post.id %}">читать далее</a>
+    {% endif %}
+  </p>
+  {% if not forloop.last %}
+    <hr>
+  {% endif %}
+{% endfor %}
+
+{% include '../includes/paginator.html' %}
+{% endblock %}
