@@ -10,7 +10,7 @@ class SignUp(CreateView):
 
     def form_valid(self, form):
         user = form.save()
-        subject = 'Регистрация на сайте'
+        subject = 'Регистрация на сайте "ВкусноЕсть"'
         message = 'Успешная регистрация на сайте.'
         from_email = 'maksimaster72@gmail.com'
         recipient_list = [user.email]
